@@ -1,10 +1,13 @@
 # Start from debian
-FROM debian:stretch-slim
+FROM ubuntu:focal-20220426
+
+ENV DEBIAN_FRONTEND noninteractive
+# ENV TZ=America/Boston
 
 # Update so we can download packages
 RUN apt update
 #Set the ROS distro
-ENV ROS_DISTRO melodic
+ENV ROS_DISTRO noetic
 
 # Add the ROS keys and package
 RUN apt install -y \
@@ -17,8 +20,8 @@ RUN curl -s "https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc" | a
 # Install ROS
 RUN apt update
 RUN apt install -y \
-    ros-$ROS_DISTRO-desktop \
-    python-rosdep
+    ros-$ROS_DISTRO-desktop-full \
+    python3-rosdep
 
 # Set up ROS
 RUN rosdep init
@@ -85,12 +88,12 @@ RUN apt install -y \
 
 # Fix some ROS things
 run apt install -y \
-    python-pip \
+    python3-pip \
     ros-$ROS_DISTRO-compressed-image-transport \
     libfreetype6-dev
-RUN pip install -U pip
-RUN pip install imutils
-RUN pip install -U matplotlib
+RUN pip3 install -U pip
+RUN pip3 install imutils
+RUN pip3 install -U matplotlib
 
 # Kill the bell!
 RUN echo "set bell-style none" >> /etc/inputrc
